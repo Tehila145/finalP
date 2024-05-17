@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.UI;
 using static System.Net.Mime.MediaTypeNames;
@@ -17,6 +18,7 @@ public class UserData : MonoBehaviour
     private string country;
     private string hobby;
     private static int questionNum = 0;
+    private static int IDCharacter;
 
     //question
 
@@ -94,6 +96,13 @@ public class UserData : MonoBehaviour
         }
         //questionNum++;
     }
-    
-    
+
+    public void GetIDCharacter(int ID)
+    {
+        IDCharacter = ID;
+        Debug.Log(ID);
+    }
+
+
+
 }
