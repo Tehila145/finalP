@@ -11,4 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RiverScene.unity
     guid: f7b88edd58c164f378ab5cec7058e0b8
+  - enabled: 1
+    path: Assets/Scenes/TeachRSA/RSA-1.unity
+    guid: 75b8325bf9f604a8ba1b3614910403ec
+  - enabled: 1
+    path: Assets/Scenes/TeachRSA/RSA-2.unity
+    guid: 09d74cd6889ae4735ae3c3c9b464a988
+  - enabled: 1
+    path: Assets/Scenes/TeachRSA/RSA-3.unity
+    guid: 3bffe7207da8a4b3eb6d12e6fdde5a41
   m_configObjects: {}
