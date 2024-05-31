@@ -49,6 +49,7 @@ public class PasswordManager : MonoBehaviour
         if (System.Text.RegularExpressions.Regex.IsMatch(password, @"[!@#$%^&*()_+=\[{\]};:<>|./?,-]"))
             score++;
 
+
         // Simulate checking against a common password list (make sure to implement this properly in a real scenario)
         if (CommonPasswords.Contains(password.ToLower()))
             return PasswordStrength.VeryWeak;

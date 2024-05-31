@@ -33,7 +33,7 @@ public class Coin : MonoBehaviour
     private void CollectCoin()
     {
         // Assuming there's a central game manager to handle the coin collection logic
-        GCDGameControlGameControl gameControl = FindObjectOfType<GCDGameControl>();
+        GCDGameControl gameControl = FindObjectOfType<GCDGameControl>();
         if (gameControl != null)
         {
             gameControl.CollectCoin();

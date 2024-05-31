@@ -11,6 +11,7 @@ public class GameController : MonoBehaviour
     private HashSet<int> correctNumbers = new HashSet<int>(); // Set correct numbers
     private List<Button> selectedButtons = new List<Button>(); // Track selected buttons
     private int correctCount = 0;
+	public GameObject portal;
 
     void Start()
     {
@@ -21,6 +22,7 @@ public class GameController : MonoBehaviour
         }
 
         feedbackText.text = ""; // Initialize feedback text safely
+		portal.SetActive(false); // Make sure the portal is deactivated
         InitializeCorrectNumbers();
     }
 
@@ -51,7 +53,8 @@ public class GameController : MonoBehaviour
     {
         if (correctCount >= requiredCorrectAnswers)
         {
-            feedbackText.text = "Correct"; // Display feedback using TextMeshPro
+            feedbackText.text = "Success"; // Display feedback using TextMeshPro
+			portal.SetActive(true);
             // Optionally, proceed to next level or trigger other actions
         }
     }
@@ -66,6 +69,7 @@ public class GameController : MonoBehaviour
         selectedButtons.Clear();
         correctCount = 0;
         feedbackText.text = ""; // Reset feedback text using TextMeshPro
+	    portal.SetActive(false); // Make sure the portal is deactivated
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Optional: reset the scene
     }
 }
