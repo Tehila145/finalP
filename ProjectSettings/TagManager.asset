@@ -19,8 +19,8 @@ TagManager:
   - background
   - object
   - BetweenObjectLayer
-  - 
-  - 
+  - Player
+  - Coin
   - 
   - 
   - 

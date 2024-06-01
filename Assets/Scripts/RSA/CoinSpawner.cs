@@ -13,7 +13,7 @@ public class CoinSpawner : MonoBehaviour
     public void SetMaxCoins(int max)
     {
         maxCoins = max;
-        SpawnCoin(); // Spawn the first coin after setting the max
+        SpawnCoin(); // Spawn the coin after setting the max
     }
 
     public void SpawnCoin()

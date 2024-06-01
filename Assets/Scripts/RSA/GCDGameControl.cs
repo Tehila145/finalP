@@ -22,8 +22,8 @@ public class GCDGameControl : MonoBehaviour
 
     void GenerateNumbers()
     {
-        numberA = Random.Range(1, 500);
-        numberB = Random.Range(1, 500);
+        numberA = Random.Range(2, 1000);
+        numberB = Random.Range(2, 1000);
     }
 
     int CalculateGCD(int a, int b)
