@@ -3,14 +3,29 @@ using UnityEngine.UI;
 
 public class NumberButton : MonoBehaviour
 {
-    public int number; // Assign this number via the Inspector to match the button
+    public string value; // Assign this value via the Inspector to match the button, can be "1", "2", "X", "#", "*"
     private Button button;
     private GameController gameController;
 
     void Start()
     {
-        gameController = FindObjectOfType<GameController>(); // Find the GameController in the scene
+        // Find the GameController in the scene
+        gameController = FindObjectOfType<GameController>();
+        if (gameController == null)
+        {
+            Debug.LogError("GameController not found in the scene.");
+            return;
+        }
+
+        // Get the Button component and add the onClick listener
         button = GetComponent<Button>();
-        button.onClick.AddListener(() => gameController.EvaluateSelection(button, number));
+        if (button != null)
+        {
+            button.onClick.AddListener(() => gameController.EvaluateSelection(value));
+        }
+        else
+        {
+            Debug.LogError("Button component not found on the gameObject.");
+        }
     }
 }
