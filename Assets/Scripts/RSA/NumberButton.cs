@@ -3,25 +3,26 @@ using UnityEngine.UI;
 
 public class NumberButton : MonoBehaviour
 {
-    public string value; // Assign this value via the Inspector to match the button, can be "1", "2", "X", "#", "*"
+    public string value; // Use string to handle "X", "#", "*", and numeric values
     private Button button;
-    private GameController gameController;
+    private Level5GameController gameController;
 
     void Start()
     {
-        // Find the GameController in the scene
-        gameController = FindObjectOfType<GameController>();
+        gameController = FindObjectOfType<Level5GameController>();
         if (gameController == null)
         {
-            Debug.LogError("GameController not found in the scene.");
+            Debug.LogError("Level5GameController not found in the scene.");
             return;
         }
 
-        // Get the Button component and add the onClick listener
         button = GetComponent<Button>();
         if (button != null)
         {
-            button.onClick.AddListener(() => gameController.EvaluateSelection(value));
+            button.onClick.AddListener(() => {
+                // Directly use EnterDigit to handle all inputs, numeric or special
+                gameController.EnterDigit(value);
+            });
         }
         else
         {

@@ -10,6 +10,7 @@ public class BookInteraction : MonoBehaviour
     public static event Action OnPhiCalculated;
 	public static event Action OnBookClosed;
     public TextMeshProUGUI textDisplay;
+    public TextMeshProUGUI eDisplay;
 
     public static int CurrentPhi { get; private set; }
     public static int P { get; private set; }
@@ -17,20 +18,28 @@ public class BookInteraction : MonoBehaviour
 	public static int EncryptedMessage { get; private set; }
     public static int PublicExponent { get; private set; }
     public static int Modulus { get; private set; }
+    private static int PrivateExponent { get; set; }
 
     private List<int> primes = new List<int>();
     private bool valuesGenerated = false;
+
+	public RSAInfoUpdater rsaInfoUpdater;
 
     void Start()
     {
         CurrentPhi = 0;
         P = 0;
         Q = 0;
+		PublicExponent = 0;
+		
+		GenerateRandomNumbers();
+		CalculatePhi();
+		SetRSA();
 
         if (textDisplay != null)
-        {
             textDisplay.gameObject.SetActive(false);
-        }
+		if (eDisplay != null)
+            eDisplay.gameObject.SetActive(false);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -60,6 +69,8 @@ public class BookInteraction : MonoBehaviour
         {
             Q = GetRandomPrimeNumber();
         } while (P == Q);
+		valuesGenerated = true;
+		Debug.Log($"valuesGenerated: {valuesGenerated}");
 		CurrentPhi = (P - 1) * (Q - 1);
         Debug.Log($"Generated primes: p = {P}, q = {Q}");
     }
@@ -68,38 +79,68 @@ public class BookInteraction : MonoBehaviour
     {
         CurrentPhi = (P - 1) * (Q - 1);
         Debug.Log($"Calculated phi: {CurrentPhi} (p: {P}, q: {Q})");
-		
-		KeypadManager keypadManager = FindObjectOfType<KeypadManager>();
-        if (keypadManager != null)
-        {
-            keypadManager.SetCorrectCode(CurrentPhi); // Set the correct code on the keypad
-        }
-		else
-    	{
-        	Debug.LogError("KeypadController not found.");
-    	}
+
+        Level5GameController controller = FindObjectOfType<Level5GameController>();
+
+//		KeypadManager keypadManager = FindObjectOfType<KeypadManager>();
+//        if (controller != null)
+//        {
+//        	controller.SetCorrectCode(CurrentPhi.ToString());  // Convert to string here
+//        }
+//        else
+//        {
+//            Debug.LogError("Level5GameController not found.");
+//        }
+//
+//        if (keypadManager != null)
+//        {
+//        	keypadManager.SetCorrectCode(CurrentPhi.ToString());  // Convert to string here
+//        }
+//		else
+//    	{
+//        	Debug.LogError("KeypadController not found.");
+//    	}
         OnPhiCalculated?.Invoke();
     }
 
 	void SetRSA()
     {
-        PublicExponent = 65537;
+//        PublicExponent = 65537;
+        PublicExponent = ChoosePublicExponent();
         Modulus = P * Q;
-		int secret = UnityEngine.Random.Range(1, 100);
-		EncryptedMessage = Encrypt(secret, PublicExponent, Modulus);
+        PrivateExponent = CalculatePrivateExponent(PublicExponent, CurrentPhi);
+		int secret = UnityEngine.Random.Range(1, 200);
+		EncryptedMessage = EncryptMessage(secret, PublicExponent, Modulus);
+        if (rsaInfoUpdater != null)
+        {
+            rsaInfoUpdater.RevealDecryptionClueAndMethod(PrivateExponent);
+        }
+		var controller = FindObjectOfType<Level5GameController>();
+        if (controller)
+			controller.SetCorrectCode(DecryptMessage(EncryptedMessage).ToString());
         Debug.Log($"Secret: {secret}, Encrypted: {EncryptedMessage}");
 		
-		KeypadManager keypadManager = FindObjectOfType<KeypadManager>();
-    	if (keypadManager != null)
-    	{
-        	keypadManager.SetCode(EncryptedMessage); // Set the encrypted message as the code to enter
-    	}
+//		KeypadManager keypadManager = FindObjectOfType<KeypadManager>();
+//    	if (keypadManager != null)
+//    	{
+//        	keypadManager.SetCorrectCode(EncryptedMessage.ToString());  // Convert to string here
+//    	}
 	}
 
-    int Encrypt(int msg, int exp, int mod)
+	int EncryptMessage(int message, int e, int n)
+	{
+    	return (int)BigInteger.ModPow(message, e, n);
+	}
+
+//	int DecryptMessage(int encryptedMessage, int d, int n)
+//	{
+//    	return (int)BigInteger.ModPow(encryptedMessage, d, n);
+//	}
+    int DecryptMessage(int encryptedMessage)
     {
-        return (int)BigInteger.ModPow(msg, exp, mod);
+        return (int)BigInteger.ModPow(encryptedMessage, PrivateExponent, Modulus);
     }
+
 
     void DisplayNumbersAndPhi()
     {
@@ -107,6 +148,11 @@ public class BookInteraction : MonoBehaviour
         {
             textDisplay.text = $"p = {P}\nq = {Q}";//\nphi = {CurrentPhi}";
             textDisplay.gameObject.SetActive(true);
+        }
+		if (eDisplay != null)
+        {
+            eDisplay.text = $"e {PublicExponent}\nn {Modulus}";
+            eDisplay.gameObject.SetActive(true);
         }
     }
 
@@ -132,4 +178,23 @@ public class BookInteraction : MonoBehaviour
                 return false;
         return true;
     }
+
+    int ChoosePublicExponent()
+	{
+		int e = 3;
+    	while (BigInteger.GreatestCommonDivisor(new BigInteger(e), new BigInteger(CurrentPhi)) != 1)
+        {
+            e += 2;
+        }
+        return e;
+	}
+	int CalculatePrivateExponent(int e, int phi)
+	{
+		Debug.Log($"Calculating private exponent for e = {e} and phi = {phi}");
+        Debug.Log($"Calculation of Private Exponent:  {(int)new BigInteger(e).ModInverse(new BigInteger(phi))}");
+//    	return (int)BigInteger.ModPow(e, phi - 1, phi);  // Simplified, might need actual modular inverse calculation
+        return (int)new BigInteger(e).ModInverse(new BigInteger(phi));
+	}
+
+
 }

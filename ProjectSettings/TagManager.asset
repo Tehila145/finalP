@@ -9,6 +9,7 @@ TagManager:
   - player
   - parchment
   - InputField
+  - lock
   layers:
   - Default
   - TransparentFX

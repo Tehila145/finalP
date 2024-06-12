@@ -23,4 +23,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TeachRSA/RSA-4.unity
     guid: eb35a1fabdf6a4de697f4b2baae594a9
+  - enabled: 1
+    path: Assets/Scenes/TeachRSA/RSA-5.unity
+    guid: cd0c4259c62204935a450c38369e45b7
+  - enabled: 1
+    path: Assets/Scenes/TeachRSA/RSA-6.unity
+    guid: fe4b08e109cb8461792143986c36c5b5
   m_configObjects: {}
