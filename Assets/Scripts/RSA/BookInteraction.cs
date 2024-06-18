@@ -16,9 +16,9 @@ public class BookInteraction : MonoBehaviour
     public static int P { get; private set; }
     public static int Q { get; private set; }
 	public static int EncryptedMessage { get; private set; }
-    public static int PublicExponent { get; private set; }
+    public static int PublicExponent { get; private set; }//e
     public static int Modulus { get; private set; }
-    private static int PrivateExponent { get; set; }
+    private static int PrivateExponent { get; set; }//d
 
     private List<int> primes = new List<int>();
     private bool valuesGenerated = false;
@@ -191,9 +191,18 @@ public class BookInteraction : MonoBehaviour
 	int CalculatePrivateExponent(int e, int phi)
 	{
 		Debug.Log($"Calculating private exponent for e = {e} and phi = {phi}");
-        Debug.Log($"Calculation of Private Exponent:  {(int)new BigInteger(e).ModInverse(new BigInteger(phi))}");
-//    	return (int)BigInteger.ModPow(e, phi - 1, phi);  // Simplified, might need actual modular inverse calculation
-        return (int)new BigInteger(e).ModInverse(new BigInteger(phi));
+
+    // Calculate the modular inverse of e mod phi to find d
+    BigInteger eBig = new BigInteger(e);
+    BigInteger phiBig = new BigInteger(phi);
+    BigInteger dBig = eBig.ModInverse(phiBig);  // Using the extension method to calculate modular inverse
+
+    int d = (int)dBig;
+
+    // Log the calculated private exponent to the Unity console
+    Debug.Log($"Calculated Private Exponent (d): {d}");
+
+    return d;
 	}
 
 

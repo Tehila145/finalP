@@ -14,6 +14,10 @@ public class Pillar : MonoBehaviour
     void Start()
     {
         TextMeshProUGUI textComponent = GetComponentInChildren<TextMeshProUGUI>();
+        if (pillarsContainer != null)
+            pillarsContainer.SetActive(false);
+        else
+            Debug.LogError("Pillars container not assigned!");
         if (textComponent != null)
         {
             NumberDisplayed = int.Parse(textComponent.text);
