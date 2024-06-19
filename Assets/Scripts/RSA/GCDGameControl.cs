@@ -1,29 +1,39 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro; // Include the TextMeshPro namespace
+
 public class GCDGameControl : MonoBehaviour
 {
-    public int numberA;
-    public int numberB;
+    public int numberP;
+    public int numberQ;
     public int gcd;
-    public TextMeshProUGUI numberDisplay;
-    public TextMeshProUGUI gcdDisplay;
-    public TextMeshProUGUI collectedDisplay;
+    public TextMeshProUGUI statusDisplay; // UI element to display all information
+    public GameObject portal;  // Reference to the portal GameObject
 
     private int coinsCollected = 0;
 
     void Start()
     {
         GenerateNumbers();
-        gcd = CalculateGCD(numberA, numberB);
+        gcd = CalculateGCD(numberP, numberQ);
         UpdateUI();
-        FindObjectOfType<CoinSpawner>().SetMaxCoins(gcd);
+        portal.SetActive(false); // Ensure the portal is initially hidden
+
+        // Trigger coin spawning with the calculated GCD as the maximum number
+        var coinSpawner = FindObjectOfType<CoinSpawner>();
+        if (coinSpawner != null)
+        {
+            coinSpawner.SetMaxCoins(gcd);
+        }
+        else
+        {
+            Debug.LogError("CoinSpawner not found in the scene!");
+        }
     }
 
     void GenerateNumbers()
     {
-        numberA = Random.Range(2, 1000);
-        numberB = Random.Range(2, 1000);
+        numberP = Random.Range(2, 1000);
+        numberQ = Random.Range(2, 1000);
     }
 
     int CalculateGCD(int a, int b)
@@ -34,38 +44,28 @@ public class GCDGameControl : MonoBehaviour
             b = a % b;
             a = temp;
         }
-
         return a;
-    }
-    public int GetGCD()
-    {
-        return gcd;
     }
 
     public void CollectCoin()
     {
         coinsCollected++;
         UpdateUI();
-
         if (coinsCollected == gcd)
         {
-            Debug.Log("Level Complete!");
-            // Optionally reset or go to the next level
+            Debug.Log("All coins collected. Portal activated!");
+            portal.SetActive(true); // Activate the portal when all coins are collected
         }
     }
 
     void UpdateUI()
     {
-        Debug.Log($"Updating UI: Numbers = {numberA}, {numberB}; GCD = {gcd}; Coins = {coinsCollected}/{gcd}");
-        if (numberDisplay == null || gcdDisplay == null || collectedDisplay == null)
+        if (statusDisplay == null)
         {
-            Debug.LogError("One or more Text components are not assigned!");
+            Debug.LogError("Status TextMeshPro component is not assigned!");
             return;
         }
 
-        numberDisplay.text = $"Numbers: {numberA} & {numberB}";
-        gcdDisplay.text = $"GCD: {gcd}";
-        collectedDisplay.text = $"Coins Collected: {coinsCollected} / {gcd}";
+        statusDisplay.text = $"Numbers: p = {numberP}, q = {numberQ} | GCD: {gcd} | Coins: {coinsCollected}/{gcd}";
     }
 }
-

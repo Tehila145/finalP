@@ -10,7 +10,8 @@ public class BookInteraction : MonoBehaviour
     public static event Action OnPhiCalculated;
 	public static event Action OnBookClosed;
     public TextMeshProUGUI textDisplay;
-    public TextMeshProUGUI eDisplay;
+    public TextMeshProUGUI eDisplay;//e and n
+    public TextMeshProUGUI encryptedMessageDisplay;
 
     public static int CurrentPhi { get; private set; }
     public static int P { get; private set; }
@@ -40,6 +41,12 @@ public class BookInteraction : MonoBehaviour
             textDisplay.gameObject.SetActive(false);
 		if (eDisplay != null)
             eDisplay.gameObject.SetActive(false);
+        if (encryptedMessageDisplay != null)
+            encryptedMessageDisplay.gameObject.SetActive(false);
+    }
+    public int GetEncryptedMessage()
+    {
+        return EncryptedMessage;  // Return the current encrypted message
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -140,6 +147,15 @@ public class BookInteraction : MonoBehaviour
     {
         return (int)BigInteger.ModPow(encryptedMessage, PrivateExponent, Modulus);
     }
+    void DisplayEncryptedMessage()
+    {
+        if (encryptedMessageDisplay != null)
+        {
+            encryptedMessageDisplay.GetComponent<TextMeshProUGUI>().text = $"Encrypted Message: {EncryptedMessage}";
+            // Don't set active here if you want control via the envelope interaction
+            // encryptedMessageDisplay.SetActive(true);
+        }
+    }
 
 
     void DisplayNumbersAndPhi()
@@ -151,6 +167,7 @@ public class BookInteraction : MonoBehaviour
         }
 		if (eDisplay != null)
         {
+            eDisplay.text = $"e {PublicExponent}\nn {Modulus}";
             eDisplay.text = $"e {PublicExponent}\nn {Modulus}";
             eDisplay.gameObject.SetActive(true);
         }
