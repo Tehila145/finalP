@@ -36,4 +36,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PasswordChecker/Check Strong Password/Check Strentgth.unity
     guid: 7b26e71e3c3484e9caa873c26c88cfb0
+  - enabled: 1
+    path: Assets/Scenes/RsaOrPassword.unity
+    guid: fb9091fc828834528ab2d9f396df39fb
   m_configObjects: {}

@@ -6501,7 +6501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8087212995117874151, guid: 3e14bf7b39e2c2940a826eb72e6b8043, type: 3}
       propertyPath: m_noBlood
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8188212440292430148, guid: 3e14bf7b39e2c2940a826eb72e6b8043, type: 3}
       propertyPath: m_BodyType
@@ -6567,7 +6567,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2779705535432673321, guid: 3e14bf7b39e2c2940a826eb72e6b8043, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -14284,7 +14285,7 @@ Transform:
   m_GameObject: {fileID: 2009358529}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.93, y: -34.3, z: 0.46055883}
+  m_LocalPosition: {x: -2.93, y: -35, z: 0.46055883}
   m_LocalScale: {x: 62.08694, y: 6.7691474, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
